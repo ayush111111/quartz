@@ -30,21 +30,47 @@ const defaultOptions: Options = {
     return node
   },
   sortFn: (a, b) => {
-    // Sort order: folders first, then files. Sort folders and files alphabeticall
-    if ((!a.isFolder && !b.isFolder) || (a.isFolder && b.isFolder)) {
-      // numeric: true: Whether numeric collation should be used, such that "1" < "2" < "10"
-      // sensitivity: "base": Only strings that differ in base letters compare as unequal. Examples: a ≠ b, a = á, a = A
+    // Sort order: folders first, then files. For folders, put certain folders
+    // (e.g. `notes`) at the top, then fall back to alphabetical ordering.
+    if (a.isFolder !== b.isFolder) return a.isFolder ? -1 : 1
+
+    const nameA = a.displayName.toLowerCase()
+    const nameB = b.displayName.toLowerCase()
+
+    // Priority list for folders (lowercased)
+    const folderPriority = ["notes"]
+
+    if (a.isFolder && b.isFolder) {
+      const ia = folderPriority.indexOf(nameA)
+      const ib = folderPriority.indexOf(nameB)
+
+      // If either is in the priority list, use that ordering
+      if (ia !== -1 || ib !== -1) {
+        if (ia === -1) return 1
+        if (ib === -1) return -1
+        return ia - ib
+      }
+
+      // Alphabetical fallback for folders
       return a.displayName.localeCompare(b.displayName, undefined, {
         numeric: true,
         sensitivity: "base",
       })
     }
 
-    if (!a.isFolder && b.isFolder) {
-      return 1
-    } else {
-      return -1
+    // Both are files (or neither is a folder): sort by date (newest first)
+    try {
+      const da = a.data?.date ? new Date((a.data as any).date).getTime() : 0
+      const db = b.data?.date ? new Date((b.data as any).date).getTime() : 0
+      if (db !== da) return db - da
+    } catch (e) {
+      // fall back to alphabetical if date parsing fails
     }
+
+    return a.displayName.localeCompare(b.displayName, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    })
   },
   filterFn: (node) => node.slugSegment !== "tags",
   order: ["filter", "map", "sort"],
