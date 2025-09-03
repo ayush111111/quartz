@@ -58,8 +58,7 @@ Template Method — Define algorithm skeleton, override steps
 Visitor — Add operations without altering classes
 
 
-## Design Patterns 
-TODO: add a link to LLD2.md 
-title: "Design Patterns"
+## Design Patterns
+See [Design Patterns](https://ayush111111.github.io/quartz/notes/LLD2).
 
 ## Problems
