@@ -68,6 +68,7 @@ print(f"Are logger1 and logger2 the same instance? {logger1 is logger2}")
 logger1.log("This is the first log message.")
 logger2.log("This is the second log message.")
 ```
+Python’s module system naturally provides singleton-like behavior. Explicit Singleton classes are almost never needed.
 https://www.pixelstech.net/article/1754987478-please-stop-asking-about-singleton-in-python
 
 ### 2. Factory Method
