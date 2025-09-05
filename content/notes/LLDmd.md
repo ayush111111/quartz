@@ -11,6 +11,8 @@ Hence, learning about this set of principles is necessary to avoid similar mista
 This knowledge is compiled and marketed as a resource for the LLD / Machine Coding interview round. As popular as it is to dunk on them, having a singular well compiled resource is well worth it in my opinion.
 I bought an educative io subscription to learn it, I must say that I fell prey to their aggressive marketing techniques. It is pretty surface level, though it has good breadth. Personal blogs on the internet are the best sources of information.
 
+PTR
+- For the Elevator Management System and the Parking Lot System the system handles CRUD operations for the key class (e.g assigning a car to a parking lot) but for the Library Management System, a seperate item called BookReservation is created those operations. I thought it would be dependant only on the count of the objects being handled but the complexity of the operation involved is a better heuristic to go by. For example, if a gym locker only needs isAvailable functionality, just using a list is enough, though the count of lockers may be high 
 ## TLDRs
 
 ### OOP Principles
@@ -27,11 +29,6 @@ I bought an educative io subscription to learn it, I must say that I fell prey t
 - Dependency Inversion; Depend on abstractions, not concretes
 
 ### Design Principles
-- Single Responsibility; One class, one responsibility
-- Open/Closed; Extend without modifying existing
-- Liskov Substitution; Replaceable without breaking correctness
-- Interface Segregation; Split interfaces per client needs
-- Dependency Inversion; Depend on abstractions, not concrections
 - Builder; Piecewise construction for complex objects
 - Factory; Encapsulate wholesale object creation
 - Abstract Factory; Create families of related objects
