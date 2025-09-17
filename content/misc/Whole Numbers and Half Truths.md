@@ -4,4 +4,6 @@ date: 2025-09-01
 
 ---
 >"Reading this book is akin to exploring maps. You zoom in to find your location, and you zoom out to see how you become a part of the landscape."
-> Deepika — [Goodreads](https://www.goodreads.com/book/show/59740806-whole-numbers-and-half-truths)
+> - Deepika — [Goodreads](https://www.goodreads.com/book/show/59740806-whole-numbers-and-half-truths)
+
+Open any page of this book and you will find a statistic that will surprise you
