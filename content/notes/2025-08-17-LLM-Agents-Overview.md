@@ -22,7 +22,8 @@ LLM specialisation pipeline
 - prompting
 - finetuning - domain specific post-training
 
-Pretraining -> >10T tokens, >20B unique web pages
+## Pretraining
+>10T tokens, >20B unique web pages
 
 1. Method
     1. AR (autoregressive) models - predict the next word
