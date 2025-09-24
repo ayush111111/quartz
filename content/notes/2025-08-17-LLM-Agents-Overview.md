@@ -5,6 +5,7 @@ tags:
     - Kimi
     - DeepSeek
     - tool-use
+    - lecture-notes
 ---
 Notes from Lecture 1 (presented by Yann Dubois, OpenAi) of [this](agenticai-learning.org/f25) Open MOOC offered by Berkeley RDI
 
