@@ -4,6 +4,7 @@ date: 2025-09-25
 tags:
     - data-engineering
     - notes
+    - distributed-systems
 
 ---
 A revision of spark and details about how it is used in the databricks environment
