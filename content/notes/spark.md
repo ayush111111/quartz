@@ -7,7 +7,8 @@ tags:
 
 ---
 A revision of spark and details about how it is used in the databricks environment
-# Apache Spark
+#
+Apache Spark
 
 1.  Introduction to Spark
     1.  Exploring Spark Architecture
@@ -158,9 +159,61 @@ A revision of spark and details about how it is used in the databricks environme
                 3.  session window - dynamically size, based on user activity
             6.  Handle late arriving data - watermarks define how long spark waits for out of order events before finalising a window
 4.  Monitor and Optimise spark workloads on databricks
-    1.
-
-
+    1.  Apache Spark and Databricks for data engineering
+        1.  The Lakehouse -unified architecture that combines the data warehouse and data lake
+            1.  data warehouse - desined for structured data with strong schema enforcement - can be costly and inflexible
+            2.  data lake - stores raw diverse data types (un,semi,structured) - low cost storage and flexibility - lacks performance and governance and data management capabilities
+            3.  Lakehouse offers structured schema capabilities, and transactional capabilities - and flexibility and scalability
+        2.  Medallion architecture - bronze(raw), silver(deduplicate,enrichment), gold(aggregations, KPs, features)
+        3.  databricks - runtime - standard, ML, photon enabled; compute - all purpose, job clusters, sql warehouses and serverless, instance pools (fast startup and reuse) and spot instances (reduce costs on ephemeral workloads)
+        4.  Unity catalog - control plane for data assets + fine-grained access control , data lineage tracking, centralised auditing and compliance 0
+    2.  Apache Spark with delta lake (table storage format)
+        1.  Delta lake - transaction log, ACID properties, versioning system
+        2.  Open table format evolution : evolution:, s3, hdfs -> parquet (efficient encoding - columnar) -> delta lake, iceberg (tabular, transactional storage - ACID, schema check, time travel aka data versioning)
+        3.  Delta Lake -
+            1.  built on top of parquet - brings reliability to data lakes
+            2.  eliminates data inconsistency
+            3.  concurrent read and writes
+            4.  schema enforcement, schema evolution, data versioning, unified batch and streaming
+        4.  How delta lake works - transaction log in a delta\_log folder - insert update and delete operations computes a delta from the current version. create new files and then commit a new "version" to the delta\_log
+        5.  Delta lake operations - fine grained delete and update operations (row-level); merge operations (true upserts in a single atomic operation), schema evolution ("create or replace table" operation); time travel (view or "restore" operation)
+        6.  delta lake is the default for databricks - can run delta-specific spark sql commands
+            1.  "describe history" and "describe detail" commands
+            2.  auto optimise and auto compact enabled by default
+        7.  delta lake performance and maintenance
+            1.  table optimizations - compact small files and index columns ("optimise".."zorder")
+            2.  log cleaning files - "vacuum..retain"
+            3.  best practices -
+                1.  use table (hive) partitioning for large eventful datasets - (txn, events)
+                2.  monitor file sizes - watch for excessive small files (processing each file would need a task)
+        8.  Apache Iceberg - acid transactions, schema evolution, branch/tag support(e.g prod, dev branches; EOY2023 tag), hidden partitioning (partition columns are hidden, partition transforms(dates to months) are hidden) and partition evolution (changes how a table is partitioned without rewriting data e.g daily to monthly partition change. old and new partition coexist, enables gradual migration)
+        9.  helpful commands - "describe extended", "describe details" - specific to details, "describe history"- same as display(delta\_table.history()), "restore table to version as of"
+        10.  default commit history retention is 7days - disable delta.retentionDurationCheck.enabled and modify RETAIN - files still might be present in the delta cache
+    3.  Optimizing apache spark
+        1.  key factors affecting spark job performance - resource utilisation (cpu, memory,network, disk), data characteristics (size, format, distribution) and configuration of the cluster
+        2.  Bottlenecks
+            1.  data skew and poor partitioning
+            2.  too much shuffling
+            3.  heavy garbage collection due to memory pressure
+        3.  Spark partitioning
+            1.  dataframe partition determines data distribution - determined by initial blocks (sparks.sql.bytes.maxPartitionBytes, spark.default.parallelism) when data is read or as a result of wide transformation (often much smaller)
+            2.  data distribution
+                1.  enables parallel processing across executors
+                2.  impacts memory utilisation per executor
+                3.  influences join and aggregation operation efficiency
+                4.  affects network traffic patterns (?)
+            3.  steps to take
+                1.  choose partition keys - high-cardinality, groupBy and df.repartition
+                2.  right size shuffle partitions - 100 to 200 mb per partition. **should not be less than number of cores,** task duration in spark ui should be **50-200 ms per task**
+                3.  shuffle operations
+                    1.  network affects job perf
+                    2.  minimise by filter early, filter often, use broadcast joins for small tables(<10gb), configure shuffle partitions based on data size, maintain consistent partitioning where possible
+                    3.  monitor spill metrics (memory vs disk)
+                4.  df caching
+                    1.  multiple access to same RDD
+                    2.  expensive transforms upstream
+                    3.  lookup tables
+                5.  query optimisation - automatic - view the plan generated
 
 \---
 Tangents
