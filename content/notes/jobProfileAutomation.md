@@ -1,5 +1,5 @@
 ---
-title: "Automating Job board Profile Updates
+title: "Automating Job board Profile Updates"
 date: 2025-10-23
 tags:
     - github-actions
@@ -10,7 +10,7 @@ tags:
 
 ## What This Project Does
 
-A Python automation framework that keeps your Naukri.com profile fresh by automatically logging in daily and managing skills, helping job seekers maintain an active presence without manual intervention.
+A Python automation framework that keeps your Naukri profile fresh by automatically logging in daily and managing skills, helping job seekers maintain an active presence without manual intervention.
 
 ### The Core Motivation
 Naukri.com's algorithm prioritizes profiles with daily logins and recent updates, bubbling them up in recruiter searches.
@@ -34,5 +34,6 @@ Since Naukri.com shows **recruiter views as a metric**, I will be observing this
 ---
 
 *Built with Python, Selenium, and GitHub Actions to keep the job search active.*
+https://github.com/ayush111111/profile-automation-job
 
 P.S it was hilarious to work with a file called cookie dot pickle.
