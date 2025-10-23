@@ -8,8 +8,6 @@ tags:
 
 ---
 A revision of spark and details about how it is used in the databricks environment
-#
-Apache Spark
 
 1.  Introduction to Spark
     1.  Exploring Spark Architecture
@@ -230,7 +228,8 @@ Tangents
     2.  **Lock contention -** Multiple threads trying to acquire the same lock
     3.  **I/O contention -** Processes competing for disk or network access
     4.  **Memory contention -** Tasks fighting over limited RAM or cache lines
-5.
 
-
+---
+miscellaneaous
+<h1></h1> <ol> <li>lookup activities in adf have a limit for events is 4000, similar for metadata activity</li> <li>passing parameters from adf to databricks - passed through &#39;base parameters&#39; to databricks which can then be accessed through dbutils.widgets</li> <li>Can install drivers, libraries (.whl, maven, pypi) into databricks clusters. Needs to be present in the databricks clust    er. Can add environment variables</li> <li>In adf linked service - some fields can be dynamic whereas others cannot be. To overcome this, the entire ls can be defined to parameterise more parameters. we don&#39;t have to dependant on the UI. - </li> <li>local development requirements spark (sparksession) creation. Databricks already has one that is created. getOrCreate()</li> <li>&#39;/mnt&#39; - resource provider in the org creates a cluster. Credentials are set for the cluster. Specific people with access can run this cluster. usage of &#39;/mnt&#39; requires the implementation of access control on volumes. Resource provider in the org prefers method 1.</li> <li>secret scope in databricks - </li> <li>key value in spark.conf (key,value) - for that session, it will allow you to read the adls folders without mounting the folder - </li> <li>While reading data using spark, you can specify the partitions by using a &#39;where&#39; clause to minimise the data being read</li> <li>writing functions - dataframe in dataframe out - provides flexibility while writing unit tests</li> <li>avoid using actions like display() or count() unless needed while deploying the notebook</li> <li>schema evolution - overwrite/merge - : example of delta merge update</li> </ol>
 \---
