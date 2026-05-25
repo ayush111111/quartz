@@ -13,6 +13,25 @@ We won the Ather Energy Software Award at Formula Bharat two years running. This
 
 ---
 
+## Onboarding (Feb–Apr 2020)
+
+Before touching any perception code, the first two months were structured research and learning tasks.
+
+**Sensor survey (Feb 20):** Covered the full AV sensor stack — ultrasonic (ToF, 20–40 kHz, short range), FMCW RADAR (chirp-based, FFT for multi-object ranging, good in all weather), LiDAR (pulsed ToF, 2D vs 3D, rotary vs solid-state), cameras (CCD vs CMOS, global vs rolling shutter, mono vs stereo, IR/ToF variants), IMU (gyros + accelerometers, odometry + slip angle estimation), GNSS/RTK (satellite ToF for absolute position, RTK adds a fixed base station for 1–2cm accuracy in fixed mode vs 0.75–0.2m in float mode).
+
+**Sensor comparison (Feb 26):** The core tradeoff: LiDAR is accurate and lighting-independent but expensive, limited range (~70–100m), slower refresh, degraded in heavy rain/snow. Cameras are cheap, high-resolution, see colour, but need illumination, are compute-heavy, and struggle with shadows and lighting variation. The takeaway for FMD: use LiDAR as the primary depth sensor and cameras for classification, colour, and extended range — each covering the other's failure modes.
+
+**Localisation (Mar 1):** Studied the three main approaches used in autonomous cars:
+- **Odometry:** wheel displacement + starting position → accumulated position estimate. Drifts badly due to wheel slip.
+- **Particle filters:** scatter N particles across the map, weight by sensor-vs-landmark match, resample toward high-weight particles. Accurate but slow with many particles; requires a pre-built map.
+- **Kalman filter:** two-step predict/update cycle. State extrapolation + covariance extrapolation (prediction), then state update + covariance update using Kalman Gain (measurement weighting). For nonlinear systems: **EKF** (Extended Kalman Filter) linearises via Jacobians at each timestep; **UKF** (Unscented Kalman Filter) uses the unscented transform for statistical linearisation — more accurate in highly nonlinear cases but more compute than EKF.
+
+**ROS tasks (Mar–Apr):** Three onboarding tasks before joining live development — a three-tier ROS publish/subscribe architecture, Gazebo simulation with a kinect depth camera + OpenCV display, and a face detection pipeline using Haar cascades with coordinates passed as custom messages between nodes. Common early gotcha: turtlebot ignoring `/velocity` topic, responding only to `/cmd_vel`.
+
+**Deep learning (Apr 11):** Completed deeplearning.ai CNN course on Coursera; implemented YOLO as the week 3 assignment of course 4 (Keras + TensorFlow backend). This was the direct prerequisite for joining the camera perception pipeline.
+
+---
+
 ## The Problem
 
 Formula Student Driverless tracks are laid out with colored cones: yellow on the left boundary, blue on the right. The car needs to know where every cone is in 3D space, in real time, reliably enough that the planning and control stack can act on it. Miss a cone and the car cuts a corner. Get the position wrong by enough and the path planner generates a trajectory that doesn't match the actual track.
@@ -31,7 +50,14 @@ The system needs to be redundant. If one sensor fails mid-run, the car should co
 
 **Camera specs (both):** CMOS sensors (not CCD — CMOS handles glare and sudden lighting changes better; CCD gets washed out). Global shutter, not rolling shutter — at racing speeds, rolling shutter distorts fast-moving objects badly. Polarized filters mounted on the housing.
 
-**Other sensors (not perception, but relevant for motion compensation):** resolvers (wheel angular speed), ground speed sensor, dual-antenna INS, steering angle sensor, motor torque sensor.
+**State estimation sensors (feed the SLAM module, not perception directly):**
+- Resolvers — angular speed at each wheel
+- Ground speed sensor
+- Dual-antenna INS (inertial navigation system)
+- Steering angle sensor
+- Motor torque sensor
+- **IMU** — gyros + accelerometers for pitch/roll/heading and slip angle estimation; used with odometry to compensate for wheel slip
+- **GNSS/RTK** — absolute position to 1–2cm in fixed mode; used for loop closure verification in SLAM mode
 
 ---
 
@@ -44,6 +70,8 @@ Two operating modes:
 2. **Localisation mode (subsequent laps):** Once the first lap closes (loop closure), the map is frozen. Perception still runs but feeds a localisation-only mode. Control switches to a nonlinear MPC (NMPC) which optimizes trajectories over a finite time horizon for maximum lap speed.
 
 A two-stage sensor failure detection system monitors both LiDAR and camera observations and penalises measurements that deviate significantly from recent history, preventing a malfunctioning sensor from poisoning the map.
+
+**SLAM state estimation internals:** The SLAM module uses an EKF (Extended Kalman Filter) to fuse cone observations with velocity estimates. The EKF linearises the nonlinear vehicle motion model via Jacobians at each timestep — necessary because the predict step involves trigonometric functions (heading angle) that are nonlinear. Kalman Gain weights the relative trust between the motion prediction and the sensor measurement: high gain → more weight to new measurements (responsive but noisy), low gain → smoothed estimate (stable but slow to update).
 
 ---
 
@@ -191,6 +219,12 @@ Everything runs in ROS. Key notes:
 **Simulation vs real calibration.** The Gazebo checkerboard calibration caught intrinsic estimation issues before we touched the physical cameras. Saved significant time not debugging optics and algorithms simultaneously.
 
 **Colour cone estimation edge cases.** The LiDAR CNN colour classifier needed intensity preprocessing to make the blue/yellow signatures distinguishable. Raw intensity values had too much overlap.
+
+---
+
+## Team and Role
+
+The driverless subsystem started with ten people. The perception work split between LiDAR and camera subgroups; I ended up owning the monocular and stereo camera pipelines end to end. Later I ran recruiting and onboarding for new perception members — the structured path I had gone through (sensors → localisation → ROS → deep learning → live pipeline) became the template. Explaining epipolar geometry to a first-year who had never touched OpenCV turned out to be as formative as the technical work itself.
 
 ---
 
