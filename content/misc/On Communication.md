@@ -14,4 +14,4 @@ Communication determines the success of every relationship — personal, profess
 
 ## With LLMs
 
-LLM slop is anti-communication. Communication should convey ideas simply and effectively. It doesn't need to be long paragraphs.
+LLM slop is anti communication. the purpose of communication is to convey ideas simply and effectively. It doesn't need to be long paragraphs.
