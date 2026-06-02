@@ -15,3 +15,8 @@ A running list of blog posts and articles I've enjoyed reading.
 ### [To Want or to Need](https://cynical.me/blog/to-want-or-to-need)
 *cynical.me · Added 2026-05-29*
 
+---
+
+### [Dedications](https://walzr.com/dedications)
+*walzr.com · Added 2026-06-02*
+
