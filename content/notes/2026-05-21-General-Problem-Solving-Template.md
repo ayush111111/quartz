@@ -20,6 +20,177 @@ While trying to take a big decision, I ended up forgetting that the events that 
 
 ---
 
+## Prompt flow
+
+*Two views of the same process — scan the summary first, then expand the full detail.*
+
+**Summary**
+
+```mermaid
+flowchart LR
+    Start(["`Decision
+under uncertainty?`"]) --> S1
+
+    S1["`**§1 Triage**
+Q1 · Q2 · Q3`"] --> S2
+
+    S2["`**§2 Select method**
+Causal · Monte Carlo
+Reference-class · Cynefin`"]
+
+    S2 --> S3
+    S2 -.->|sequential decisions| S25["`**+ §2.5**
+Influence Diagrams`"]
+    S2 -.->|ruin risk| S26["`**+ §2.6**
+Asymmetric Risk`"]
+    S25 & S26 --> S3
+
+    S3["`**§3 Pólya Wrapper**`"] --> S4
+
+    S4["`**§4 Anti-patterns**
+11 checks`"]
+    S4 -->|Pass| Report(["`**Report + 90% CI**`"])
+    S4 -.->|Fail| S3
+
+    classDef method stroke:#60a5fa,stroke-width:2px
+    classDef overlay stroke:#34d399,stroke-width:2px
+    classDef check stroke:#c084fc,stroke-width:2px
+    classDef terminal stroke:#34d399,stroke-width:2px
+
+    class S1,S2 method
+    class S25,S26 overlay
+    class S4 check
+    class Report terminal
+```
+
+**Full detail**
+
+```mermaid
+flowchart TD
+    Start(["`**Decision under uncertainty?**`"]) --> Q1
+
+    Q1{"`**Q1**
+Observational data
+on past instances?`"}
+    Q1 -->|Yes| M21
+    Q1 -->|No| Q2
+
+    Q2{"`**Q2**
+Calibrated 90% CIs
+for each input?`"}
+    Q2 -->|Yes| M22
+    Q2 -->|No| Q3
+
+    Q3{"`**Q3**
+Reference class of
+comparable decisions?`"}
+    Q3 -->|Yes| M23
+    Q3 -->|No| M24
+
+    M21["`**§2.1 Causal Inference**
+DAG → testable implications
+→ identification → estimation
+*dagitty · dowhy · EconML*`"]
+
+    M22["`**§2.2 Monte Carlo**
+Calibrated CIs + joint sampling
+10 000+ draws · sensitivity analysis
+*numpy · pymc · Guesstimate*`"]
+
+    M23["`**§2.3 Reference-class**
+Identify class → base-rate distribution
+→ conservative inside-view adjustment
+Pre-commit adjustment magnitude`"]
+
+    M24["`**§2.4 Cynefin meta-routing**
+Clear → categorise → respond
+Complicated → analyse → respond
+Complex → probe → sense → respond
+Chaotic → act → sense → respond`"]
+
+    M21 & M22 & M23 & M24 --> OC1
+
+    OC1{"`Multiple sequential
+decisions?`"}
+    OC1 -->|Yes, also add| M25
+    OC1 -->|No| OC2
+    M25 --> OC2
+
+    M25["`**§2.5 Influence Diagrams**
+Decision □ · Chance ○ · Value ◇
+Explicit dependence arrows
+*pgmpy · GeNIe · Analytica*`"]
+
+    OC2{"`Downside is
+irreversible or ruin?`"}
+    OC2 -->|Yes, also add| M26
+    OC2 -->|No| P1
+    M26 --> P1
+
+    M26["`**§2.6 Asymmetric Risk**
+Maximise EV subject to P(ruin) < ε
+Kelly criterion for repeated bets
+Prefer optionality over closed choices`"]
+
+    subgraph Polya["§3 — Pólya Wrapper  (run regardless of §2 method)"]
+        P1["`**1. Understand**
+State the decision in one sentence
+Identify reversibility · time horizon
+· success criteria`"]
+        P2["`**2. Devise**
+Run §1 triage · commit to §2 method
+in writing before building`"]
+        P3["`**3. Execute**
+Build the model
+Document every assumption with a
+source, or label it a prior`"]
+        P4["`**4. Look back**
+Run §4 anti-patterns · stress-test
+Identify the load-bearing assumption`"]
+        P1 --> P2 --> P3 --> P4
+        P4 -.->|revise if mis-specified| P1
+    end
+
+    P4 --> Anti
+
+    Anti["`**§4 Anti-patterns Checklist**
+☐ Independence — stages truly independent?
+☐ Marginal-vs-conditional — P(Y | upstream)?
+☐ Hidden mediator — unrepresented variable?
+☐ Missing category — implicit 'other' bucket?
+☐ Point-estimate — 90% CIs belong here?
+☐ Ruin — worst case survivable?
+☐ LLM-as-oracle — used LLM for causal P(Y|do(X))?
+☐ Sensitivity — which ±50% assumption flips answer?
+☐ Reference-class — how does estimate differ from base rate?`"]
+
+    Anti -->|All pass| Report
+    Anti -->|Any fail| Fix
+
+    Fix["`Fix mis-specification
+Return to relevant §2 step`"] --> P3
+
+    Report(["`**Report**
+Answer with 90% CI
+Load-bearing assumption
+Range across plausible alternatives
+What would most change the answer?`"])
+
+    classDef question stroke:#f59e0b,stroke-width:2px
+    classDef method stroke:#60a5fa,stroke-width:2px
+    classDef overlay stroke:#34d399,stroke-width:2px
+    classDef terminal stroke:#34d399,stroke-width:2px
+    classDef check stroke:#c084fc,stroke-width:2px
+
+    class Q1,Q2,Q3,OC1,OC2 question
+    class M21,M22,M23,M24 method
+    class M25,M26 overlay
+    class Anti,Fix check
+    class Report terminal
+```
+
+---
+
 ## 0. The structural rule
 
 **Multiplying marginal probabilities across stages assumes independence.**
@@ -209,135 +380,7 @@ Run before reporting any answer.
 
 ---
 
-## 5. Prompt flow DAG
-
-```mermaid
-flowchart TD
-    Start(["`**Decision under uncertainty?**`"]) --> Q1
-
-    Q1{"`**Q1**
-Observational data
-on past instances?`"}
-    Q1 -->|Yes| M21
-    Q1 -->|No| Q2
-
-    Q2{"`**Q2**
-Calibrated 90% CIs
-for each input?`"}
-    Q2 -->|Yes| M22
-    Q2 -->|No| Q3
-
-    Q3{"`**Q3**
-Reference class of
-comparable decisions?`"}
-    Q3 -->|Yes| M23
-    Q3 -->|No| M24
-
-    M21["`**§2.1 Causal Inference**
-DAG → testable implications
-→ identification → estimation
-*dagitty · dowhy · EconML*`"]
-
-    M22["`**§2.2 Monte Carlo**
-Calibrated CIs + joint sampling
-10 000+ draws · sensitivity analysis
-*numpy · pymc · Guesstimate*`"]
-
-    M23["`**§2.3 Reference-class**
-Identify class → base-rate distribution
-→ conservative inside-view adjustment
-Pre-commit adjustment magnitude`"]
-
-    M24["`**§2.4 Cynefin meta-routing**
-Clear → categorise → respond
-Complicated → analyse → respond
-Complex → probe → sense → respond
-Chaotic → act → sense → respond`"]
-
-    M21 & M22 & M23 & M24 --> OC1
-
-    OC1{"`Multiple sequential
-decisions?`"}
-    OC1 -->|Yes, also add| M25
-    OC1 -->|No| OC2
-    M25 --> OC2
-
-    M25["`**§2.5 Influence Diagrams**
-Decision □ · Chance ○ · Value ◇
-Explicit dependence arrows
-*pgmpy · GeNIe · Analytica*`"]
-
-    OC2{"`Downside is
-irreversible or ruin?`"}
-    OC2 -->|Yes, also add| M26
-    OC2 -->|No| P1
-    M26 --> P1
-
-    M26["`**§2.6 Asymmetric Risk**
-Maximise EV subject to P(ruin) < ε
-Kelly criterion for repeated bets
-Prefer optionality over closed choices`"]
-
-    subgraph Polya["§3 — Pólya Wrapper  (run regardless of §2 method)"]
-        P1["`**1. Understand**
-State the decision in one sentence
-Identify reversibility · time horizon
-· success criteria`"]
-        P2["`**2. Devise**
-Run §1 triage · commit to §2 method
-in writing before building`"]
-        P3["`**3. Execute**
-Build the model
-Document every assumption with a
-source, or label it a prior`"]
-        P4["`**4. Look back**
-Run §4 anti-patterns · stress-test
-Identify the load-bearing assumption`"]
-        P1 --> P2 --> P3 --> P4
-        P4 -.->|revise if mis-specified| P1
-    end
-
-    P4 --> Anti
-
-    Anti["`**§4 Anti-patterns Checklist**
-☐ Independence — stages truly independent?
-☐ Marginal-vs-conditional — P(Y | upstream)?
-☐ Hidden mediator — unrepresented variable?
-☐ Missing category — implicit 'other' bucket?
-☐ Point-estimate — 90% CIs belong here?
-☐ Ruin — worst case survivable?
-☐ LLM-as-oracle — used LLM for causal P(Y|do(X))?
-☐ Sensitivity — which ±50% assumption flips answer?
-☐ Reference-class — how does estimate differ from base rate?`"]
-
-    Anti -->|All pass| Report
-    Anti -->|Any fail| Fix
-
-    Fix["`Fix mis-specification
-Return to relevant §2 step`"] --> P3
-
-    Report(["`**Report**
-Answer with 90% CI
-Load-bearing assumption
-Range across plausible alternatives
-What would most change the answer?`"])
-
-    classDef question fill:#fef3c7,stroke:#d97706,color:#1c1917
-    classDef method fill:#eff6ff,stroke:#3b82f6,color:#1e3a5f
-    classDef overlay fill:#f0fdf4,stroke:#22c55e,color:#14532d
-    classDef terminal fill:#f0fdf4,stroke:#16a34a,color:#14532d,font-weight:bold
-    classDef check fill:#fdf4ff,stroke:#a855f7,color:#3b0764
-
-    class Q1,Q2,Q3,OC1,OC2 question
-    class M21,M22,M23,M24 method
-    class M25,M26 overlay
-    class Anti,Fix check
-    class Report terminal
-```
-
----
-
-## 6. Meta-prompt (use when tools are NOT available)
+## 5. Meta-prompt (use when tools are NOT available)
 
 Paste alongside this file at the start of any decision-modeling session.
 
@@ -369,14 +412,14 @@ on rung 1. Stop, route, retry.
 
 ---
 
-## 7. LLM-augmented workflow (when tools ARE available)
+## 6. LLM-augmented workflow (when tools ARE available)
 
 Use this section when the LLM has web search and code execution
 (e.g. Claude Pro / Sonnet 4+ on claude.ai, ChatGPT Pro with Code
 Interpreter + Browsing). The empirical evidence for what tool-using
 LLMs can and cannot do is summarized in the references file.
 
-### 7.1. What to use the LLM for
+### 6.1. What to use the LLM for
 
 - **DAG drafting.** Variable labels + domain context → draft DAG with
   rationale per edge. This is where LLMs add the most value.
@@ -388,7 +431,7 @@ LLMs can and cannot do is summarized in the references file.
 - **Adversarial review.** A second LLM pass runs the §4 checklist on
   the first pass's output.
 
-### 7.2. What NOT to use the LLM for
+### 6.2. What NOT to use the LLM for
 
 - Computing `P(Y | do(X))` from training data. That's associational.
 - Forecasting without retrieval. Frontier models without search are
@@ -397,7 +440,7 @@ LLMs can and cannot do is summarized in the references file.
 - Single-shot point estimates. Use ensembling (multiple prompts or
   re-runs, then median).
 
-### 7.3. Failure modes specific to LLM workflows
+### 6.3. Failure modes specific to LLM workflows
 
 - **Pattern-matching on familiar variables.** If the problem uses
   domain jargon the LLM "recognizes," test by renaming variables to
@@ -411,7 +454,7 @@ LLMs can and cannot do is summarized in the references file.
 - **Confidence inflation.** Always ask for 90% CIs explicitly. Ranges
   narrower than 50% of the median should trigger skepticism.
 
-### 7.4. What's actually accessible in a chat interface
+### 6.4. What's actually accessible in a chat interface
 
 **Claude (claude.ai or Pro):** web_search, code execution (analysis
 tool), file creation, artifacts, Projects (persist this file across
@@ -430,9 +473,9 @@ chat workflows.
 
 ---
 
-## 8. Augmented meta-prompt (use when tools ARE available)
+## 7. Augmented meta-prompt (use when tools ARE available)
 
-Replaces §6 when web search + code execution are available.
+Replaces §5 when web search + code execution are available.
 
 ```
 You have access to web_search, code_execution, and (when applicable)
