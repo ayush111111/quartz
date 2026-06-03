@@ -154,16 +154,16 @@ Prefer optionality over closed choices`"]
 
     subgraph PrePost["§3 — Pre-flight + Post-flight  (run regardless of §2 method)"]
         PF["`**Pre-flight**
-1. Decision statement — one sentence
-2. Reversibility → if Low → §2.6
-3. Time horizon
-4. §1.5 target — name the fact; get it if you can`"]
+· Decision statement — one sentence
+· Reversibility — if Low → §2.6
+· Time horizon
+· §1.5 target — get it if you can name it`"]
         EX["`**Execute §2 method**`"]
         POF["`**Post-flight**
-1. Run §4 anti-patterns
-2. Name the load-bearing assumption
-3. State what would flip the recommendation
-4. Retrospective — was load-bearing fact cheaply measurable?`"]
+· Run §4 anti-patterns
+· Name the load-bearing assumption
+· State what would flip the recommendation
+· Retrospective — was key fact cheaply measurable?`"]
         PF --> EX --> POF
         POF -.->|revise if mis-specified| PF
     end
