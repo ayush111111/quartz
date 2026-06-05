@@ -20,3 +20,8 @@ A running list of blog posts and articles I've enjoyed reading.
 ### [Dedications](https://walzr.com/dedications)
 *walzr.com · Added 2026-06-02*
 
+---
+
+### [Reflections on a Decade of Coding](https://www.scattered-thoughts.net/writing/reflections-on-a-decade-of-coding)
+*scattered-thoughts.net · Added 2026-06-05*
+
