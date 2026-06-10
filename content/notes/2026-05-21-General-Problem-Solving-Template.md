@@ -9,7 +9,7 @@ tags:
     - uncertainty
 ---
 
-While trying to take a big decision, I ended up forgetting that the events that resulted in the decision were not independent. I realised that while attending an introductory about how LLMs are bad at causal inference, but good at making the building blocks (DAGs) that aid in doing it. To avoid making such mistakes in the future, I want a generalised prompt. This is v1.4 of that prompt.
+While trying to take a big decision, I ended up forgetting that the events that resulted in the decision were not independent. I realised that while attending an introductory about how LLMs are bad at causal inference, but good at making the building blocks (DAGs) that aid in doing it. To avoid making such mistakes in the future, I want a generalised prompt. This is v1.5 of that prompt.
 
 ---
 
@@ -55,7 +55,7 @@ Asymmetric Risk`"]
 **+ Post-flight**`"] --> S4
 
     S4["`**§4 Anti-patterns**
-12 checks`"]
+15 checks`"]
     S4 -->|Pass| Report(["`**Report + 90% CI**`"])
     S4 -.->|Fail| S3
 
@@ -79,7 +79,8 @@ flowchart TD
     Start(["`**Decision under uncertainty?**`"]) --> VoI
 
     VoI{"`**§1.5 VoI Gate**
-Cheap key fact that would
+Cheap key fact — or one-line
+analytic bound — that would
 make this obvious?`"}
     VoI -->|"Yes → get it"| VoIR["`Get it · Update priors
 Re-evaluate`"]
@@ -112,6 +113,8 @@ DAG → testable implications
 *dagitty · dowhy · EconML*`"]
 
     M22["`**§2.2 Monte Carlo**
+Tail-class check — name the mechanism
+Heavy tail → exceedance form P(X > x)
 Calibrated CIs + joint sampling
 10 000+ draws · sensitivity analysis
 *numpy · pymc · Guesstimate*`"]
@@ -150,7 +153,8 @@ irreversible or ruin?`"}
     M26["`**§2.6 Asymmetric Risk**
 Maximise EV subject to P(ruin) < ε
 Kelly criterion for repeated bets
-Prefer optionality over closed choices`"]
+Prefer optionality over closed choices
+Exposure scaling — LLN or one-big-jump?`"]
 
     subgraph PrePost["§3 — Pre-flight + Post-flight  (run regardless of §2 method)"]
         PF["`**Pre-flight**
@@ -176,9 +180,12 @@ Prefer optionality over closed choices`"]
 ☐ Hidden mediator — unrepresented variable?
 ☐ Missing category — implicit 'other' bucket?
 ☐ Point-estimate — 90% CIs belong here?
+☐ Unit stability — constant-cost unit or state-dependent?
+☐ Tail-class — named mechanism for distribution shape?
 ☐ Ruin — worst case survivable?
 ☐ LLM reliability — causal? Bayesian update? Sycophancy?
 ☐ Sensitivity — which ±50% assumption flips answer?
+☐ Narrative direction — reversed arrow equally plausible?
 ☐ Reference-class — how does estimate differ from base rate?
 ☐ Sign vs magnitude — 2–10× error possible?
 ☐ VoI retrospective — load-bearing fact cheaply measurable?`"]
@@ -260,7 +267,11 @@ Before building any model, ask:
 
 This step exists because a 30-minute phone call often beats a 3-hour
 simulation. If you can name the person who would know the answer, call
-them before opening a spreadsheet.
+them before opening a spreadsheet. The same goes for arithmetic: a
+one-line analytic bound (e.g. an exceedance estimate, `n · P(X > B)`)
+can often settle whether a risk is negligible or dominant before any
+simulation is built — a back-of-envelope calculation is a cheap fact
+too.
 
 **Examples:**
 - Career comp decision → call two people who made the same move in the
@@ -269,6 +280,9 @@ them before opening a spreadsheet.
 - Product launch → run a 50-person survey before building a demand model.
 - Investment → check if the historical return distribution already exists
   in FRED or Vanguard data before estimating it yourself.
+- Budget overrun risk → a two-line exceedance calculation may show the
+  tail probability is either negligible or dominant; no Monte Carlo
+  needed either way.
 
 If §1.5 produces a data point that makes the decision obvious, skip §2
 entirely. Not every decision needs a model.
@@ -311,6 +325,21 @@ decisions.
    not independently.
 5. Run sensitivity analysis. Which variable contributes most to output
    variance? Measure that one harder before deciding.
+
+**Tail-class check (before step 3):** a 90% CI is the wrong
+representation for a fat-tailed variable — the decision-relevant
+probability mass lives *outside* any 90% interval, and a triangular or
+normal fit to a power-law variable understates exceedance by orders of
+magnitude. You can be perfectly calibrated on the interval and still be
+catastrophically wrong about the tail. Before assigning a CI, ask what
+**mechanism** generates the variable: additive independent causes
+suggest thin tails; multiplicative or feedback processes (compounding
+state, viral dynamics, agentic loops) suggest heavy ones. If heavy,
+model the exceedance function `P(X > x)` directly instead of the
+interval, and route the decision through §2.6. Rule: **every
+distributional assumption needs a named generative mechanism, or it's
+decoration** — a fitted shape with no mechanism is exactly what the §4
+LLM reliability check should distrust.
 
 **Tools:** Python (`numpy`, `scipy.stats`, `pymc`), Excel + `@Risk`,
 Stan, Guesstimate.
@@ -408,6 +437,14 @@ irreversible (ruin, reputational collapse, biological harm).
   never a fraction that causes ruin under realized variance.
 - **Defensive deletion:** specify what you will *not* do; optimize within
   the survival set.
+- **Exposure scaling:** if you repeat the decision n times, ask whether
+  risk averages out or compounds. Thin tails → law of large numbers;
+  risk per unit shrinks with repetition. Subexponential (heavy) tails →
+  one-big-jump regime; `P(total loss exceeds budget) ≈ n · P(one draw
+  exceeds budget)`, so risk scales *linearly* with exposure count
+  instead of diluting. Job applications average out; parallel agents on
+  a metered budget compound. Classify the regime before deciding how
+  many times to play.
 
 ---
 
@@ -451,6 +488,17 @@ Run before reporting any answer.
 - [ ] **Missing category check.** What is the implicit "other" bucket
   the model doesn't enumerate?
 - [ ] **Point-estimate check.** Single numbers where 90% CIs belong?
+- [ ] **Unit stability check.** Is the unit of decomposition actually
+  constant-cost, or does its marginal cost/value vary with accumulated
+  state? ("An hour of my time," "a task," "a user," "a token" — all can
+  grow with state. A linear budget in a state-dependent unit is
+  mis-specified from the start.)
+- [ ] **Tail-class check.** For each variable, is there a named
+  generative mechanism justifying its distribution shape? Additive
+  causes → thin tails; multiplicative/feedback processes → heavy tails.
+  If heavy, is the model in exceedance form (§2.2) and is exposure
+  scaling accounted for (§2.6)? A fitted shape with no mechanism is
+  decoration.
 - [ ] **Stopping-rule check.** Payoffs capped at realistic terminals?
   Losses bounded by what is survivable?
 - [ ] **LLM reliability check** (three sub-checks):
@@ -466,6 +514,10 @@ Run before reporting any answer.
     answer. See §9 pushback protocol.
 - [ ] **Sensitivity check.** Which assumption, if changed ±50%, flips
   the recommendation? That's load-bearing; measure it harder.
+- [ ] **Narrative direction check.** For the load-bearing causal edge,
+  does the *reversed* arrow explain the same evidence equally well? If
+  yes, the direction is an assumption, not a finding — label it as a
+  prior and say what data would distinguish the two.
 - [ ] **Reference-class check.** What do comparable past decisions
   show? How does my estimate differ, and why?
 - [ ] **Ruin check.** Is the worst case survivable? If not, EV is the
@@ -718,3 +770,4 @@ ask yourself:
 | 1.2 | — | Refinements |
 | 1.3 | May 2026 | Published version |
 | 1.4 | June 2026 | Added §1.5 (value of information gate). Replaced §3 Pólya wrapper with Pre-flight/Post-flight. Added §9 pushback protocol. Expanded §4 anti-patterns with Bayesian update + sycophancy sub-checks + VoI retrospective. Added §2.3.1 base rates table. Added §2 method column to §2.4 Cynefin table. Added §2.5 node budget. Added §7.3 local patching failure mode. Updated both Mermaid DAGs. |
+| 1.5 | June 2026 | Added three §4 checks: unit stability (is the unit of decomposition constant-cost?), tail-class (named generative mechanism per distribution; exceedance form for heavy tails), narrative direction (does the reversed causal arrow explain the evidence equally well?). Added §2.2 tail-class check before calibration. Added §2.6 exposure scaling principle (LLN vs one-big-jump regime). Added analytic bound as a cheap fact in §1.5. Updated both Mermaid DAGs. |
