@@ -11,7 +11,3 @@ Communication determines the success of every relationship — personal, profess
 - Prepare for conversations as much as you can
 - Anxiety is lack of clarity — plan conversations to detect and confront communication gaps aggressively
 - Defer conversations to the next day if you are not in a mental state to have the conversation
-
-## With LLMs
-
-LLM slop is anti communication. the purpose of communication is to convey ideas simply and effectively. It doesn't need to be long paragraphs.

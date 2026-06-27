@@ -9,7 +9,7 @@ tags:
     - uncertainty
 ---
 
-While trying to take a big decision, I ended up forgetting that the events that resulted in the decision were not independent. I realised that while attending an introductory about how LLMs are bad at causal inference, but good at making the building blocks (DAGs) that aid in doing it. To avoid making such mistakes in the future, I want a generalised prompt. This is v1.5 of that prompt.
+While trying to take a consequential decision, I ended up forgetting that the events that resulted in the decision were not independent. I realised it, while attending an introductory lecture about causal inference. LLMs are bad at the same thing: inferring relationships on the fly, but are good at making the building blocks (DAGs) when explicitly instructed to do so. To avoid making such mistakes in the future, I wanted a generalised prompt. This is v1.5 of that prompt.
 
 ---
 
