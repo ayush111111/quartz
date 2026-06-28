@@ -7,6 +7,7 @@ date: 2025-09-01
 ## Great Resources
 
 - [Game Programming Patterns — Event Queue](https://gameprogrammingpatterns.com/event-queue.html) — one of the clearest real-world pattern walkthroughs out there; the whole site is worth reading
+- [Fintech Engineering Handbook](https://w.pitula.me/fintech-engineering-handbook/)
 
 ---
 
