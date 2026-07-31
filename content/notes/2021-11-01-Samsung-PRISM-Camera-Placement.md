@@ -10,7 +10,7 @@ tags:
     - internship
 ---
 
-Samsung PRISM (Platform for Research Innovation in Samsung Mobiles) is a research program where students work on problems Samsung actually cares about. My project: given a stage — a concert, a product launch, any live event — automatically determine the minimum number of cameras and their optimal positions to achieve full coverage, accounting for obstacles like speaker stacks, lighting rigs, podiums, and pillars.
+Samsung PRISM (PReparing and Inspiring Student Minds) is a research program where students work on problems Samsung actually cares about. My project: given a stage — a concert, a product launch, any live event — automatically determine the minimum number of cameras and their optimal positions to achieve full coverage, accounting for obstacles like speaker stacks, lighting rigs, podiums, and pillars.
 
 ---
 
