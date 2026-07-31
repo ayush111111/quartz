@@ -1,6 +1,6 @@
 ---
 title: "Bayesian Optimization"
-date: 2026-07-31
+date: 2024-12-24
 tags:
   - bayesian-optimization
   - gaussian-processes
