@@ -1,6 +1,8 @@
 ---
 title: "Berkeley RDI Agents MOOC Overview"
 date: 2025-06-01
+assisted: summary
+assistedNote: "The per-lecture summaries on this page are LLM generated. The underlying notes they link to are mine."
 tags:
   - sp25-lecture-notes
   - lecture

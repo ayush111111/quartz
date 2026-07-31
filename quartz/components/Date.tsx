@@ -26,6 +26,13 @@ export function formatDate(d: Date, locale: ValidLocale = "en-US"): string {
   })
 }
 
+export function formatMonthYear(d: Date, locale: ValidLocale = "en-US"): string {
+  return d.toLocaleDateString(locale, {
+    year: "numeric",
+    month: "long",
+  })
+}
+
 export function Date({ date, locale }: Props) {
   return <time datetime={date.toISOString()}>{formatDate(date, locale)}</time>
 }

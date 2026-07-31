@@ -1,6 +1,8 @@
 ---
 title: "General Problem Solving Template"
 date: 2026-05-21
+assisted: prose
+assistedNote: "The motivation and the intro are mine. The framework itself is an LLM-authored prompt that I iterated on across versions."
 tags:
     - problem-solving
     - decision-making
