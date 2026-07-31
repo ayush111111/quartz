@@ -20,3 +20,9 @@ A few pieces I'd point you to first:
 - [[Posts I Like]] — a running list of writing I've enjoyed
 - [[2026-05-21-General-Problem-Solving-Template|General Problem Solving Template]] — a reusable framework for working through hard problems
 
+---
+
+> The spectacular was rooted in the mundane, in the monotony of hard labor.
+
+— Scott Cacciola, writing on Kobe Bryant in [*The New York Times*](https://www.nytimes.com/2020/05/26/sports/basketball/kobe-bryant-olympic-dream-team.html) (2020)
+
