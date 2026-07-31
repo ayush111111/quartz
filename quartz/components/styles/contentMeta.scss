@@ -11,4 +11,16 @@
       }
     }
   }
+
+  // Disclosure marker for notes that declare `assisted:` in their frontmatter.
+  // Deliberately quiet: it belongs in the meta line, not as a warning banner.
+  & > .ai-assisted {
+    cursor: help;
+    border-bottom: 1px dotted var(--gray);
+
+    &::before {
+      content: "✎ ";
+      opacity: 0.7;
+    }
+  }
 }

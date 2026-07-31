@@ -1,6 +1,8 @@
 ---
 title: "NPUs Are the Answer to the Wrong Problem"
 date: 2026-05-03
+assisted: prose
+assistedNote: "The hardware, the benchmarks and the conclusions are mine, from my own testing notes. An LLM drafted the prose from them."
 tags:
     - hardware
     - llm

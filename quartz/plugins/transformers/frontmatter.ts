@@ -151,6 +151,9 @@ declare module "vfile" {
         cssclasses: string[]
         socialImage: string
         comments: boolean | string
+        assisted: string
+        assistedNote: string
+        written: string
       }>
   }
 }
