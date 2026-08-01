@@ -1,6 +1,7 @@
 ---
 title: "Automating Job board Profile Updates"
 date: 2025-10-23
+draft: true
 assisted: prose
 assistedNote: "The project is mine. An LLM expanded my README into this write-up."
 tags:
