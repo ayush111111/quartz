@@ -2,6 +2,7 @@
 title: "PID Control line follower"
 date: 2021-01-16
 tags:
+  - projects
   - robotics
   - control-systems
   - computer-vision

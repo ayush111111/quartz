@@ -2,6 +2,7 @@
 title: "Automated Head Circumference Measurement"
 date: 2023-04-26
 tags:
+  - projects
   - machine-learning
   - medical-imaging
   - computer-vision
