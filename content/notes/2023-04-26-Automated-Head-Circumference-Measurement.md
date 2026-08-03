@@ -34,6 +34,8 @@ Hyperparameter tuning performed using KerasTuner
 
 Paper: [Automating UNet Architecture Search for Fetal Head Segmentation](notes/Automating-UNet-Architecture-Search-for-Fetal-Head-Segmentation.pdf)
 
+Accepted at TENCON 2026; author's accepted version
+
 <iframe src="notes/Automating-UNet-Architecture-Search-for-Fetal-Head-Segmentation.pdf" width="100%" height="800" style="border: 1px solid var(--lightgray);"></iframe>
 
 Application: <https://aaylmao-hc-prediction.hf.space/>
