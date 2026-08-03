@@ -32,9 +32,13 @@ Median dice score of 0.9889 was obtained the test dataset (10% of total [dataset
 
 Hyperparameter tuning performed using KerasTuner
 
-<iframe src="https://drive.google.com/file/d/1h0NqWJDkiBFS_IiRxRxL9jcHeYOTyRIU/preview" width="640" height="480" allow="autoplay"></iframe>
+Paper: [Automating UNet Architecture Search for Fetal Head Segmentation](notes/Automating-UNet-Architecture-Search-for-Fetal-Head-Segmentation.pdf)
 
-Application 
+Accepted at TENCON 2026; author's accepted version
+
+<iframe src="notes/Automating-UNet-Architecture-Search-for-Fetal-Head-Segmentation.pdf" width="100%" height="800" style="border: 1px solid var(--lightgray);"></iframe>
+
+Application: <https://aaylmao-hc-prediction.hf.space/>
 
 <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/3.27.0/gradio.js"></script>
 <gradio-app src="https://aaylmao-hc-prediction.hf.space"></gradio-app>
