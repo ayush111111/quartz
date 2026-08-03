@@ -5,6 +5,7 @@ written: 2026-05-25
 assisted: prose
 assistedNote: "Written in 2026 about work I did in 2021. The project, the findings and the source material are mine; an LLM drafted the prose from my old project files and notes."
 tags:
+    - projects
     - computer-vision
     - geometry
     - internship
