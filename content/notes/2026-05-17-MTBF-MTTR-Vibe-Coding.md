@@ -1,6 +1,7 @@
 ---
 title: "MTBF, MTTR, and Vibe Coding"
 date: 2026-05-17
+draft: true
 tags:
     - miscellaneous
 ---
