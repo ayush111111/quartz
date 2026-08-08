@@ -93,7 +93,7 @@ LLMs for theorem proving
                 1.  No reliable automatic evaluation - logic inequivalence is infeasible
                 2.  Informal proofs - "left to the reader"
             2.  Restrict to specific domain - Euclidean geometry
-                1.  LeanEuclid - Created Benchmark 48 from Euclid's elements, 125 from unigeo dataset - logical proofs in Euclid's poof -e.g. not imagining all cases of triangles, assuming concaveness - Diagrammatic Reasoning gaps. e.g. proving two circles intersect at a point. Avigad identified a set of hidden axioms that can be formalised.
+                1.  LeanEuclid - Created Benchmark 48 from Euclid's elements, 125 from unigeo dataset - logical inconsistencies in Euclid's poof -e.g. not imagining all cases of triangles, assuming concaveness - Diagrammatic Reasoning gaps. e.g. proving two circles intersect at a point. Avigad identified a set of hidden axioms that can be formalised.
                 2.  Equivalence checking between theorems becomes possible - Now possible because Euclidean geometry theorems are not general theorems, they take a particular form. This is done by SMT based solver
                 3.  Hence theorem statements are verifiably autoformalised
             3.  Proof: informal theorem and proof -> formal proof
