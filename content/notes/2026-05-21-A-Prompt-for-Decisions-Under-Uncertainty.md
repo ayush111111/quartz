@@ -1,6 +1,8 @@
 ---
-title: "General Problem Solving Template"
+title: "A Prompt for Decisions Under Uncertainty"
 date: 2026-05-21
+aliases:
+    - "notes/2026-05-21-General-Problem-Solving-Template"
 assisted: prose
 assistedNote: "The motivation and the intro are mine. The framework itself is an LLM-authored prompt that I iterated on across versions."
 tags:
