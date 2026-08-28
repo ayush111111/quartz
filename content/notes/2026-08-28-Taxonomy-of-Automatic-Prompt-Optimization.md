@@ -42,7 +42,7 @@ flowchart LR
 Where the starting prompt comes from.
 
 ```mermaid
-flowchart TD
+flowchart LR
     A["3 Seed prompts"] --> B["3.1 Manual instructions"]
     A --> C["3.2 Instruction-induction<br/>via LLMs"]
 
@@ -55,7 +55,7 @@ flowchart TD
 How a candidate prompt is scored, and what signal is passed back to the generator.
 
 ```mermaid
-flowchart TD
+flowchart LR
     A["4 Inference evaluation<br/>and feedback"] --> N["4.1 Numeric score"]
     A --> L["4.2 LLM feedback"]
     A --> H["4.3 Human feedback"]
@@ -77,7 +77,7 @@ flowchart TD
 How new candidate prompts are produced. The largest branch of the taxonomy.
 
 ```mermaid
-flowchart TD
+flowchart LR
     A["5 Candidate prompt<br/>generation"] --> H["5.1 Heuristic-based edits"]
     A --> N["5.2 Editing with auxiliary<br/>trained NN"]
     A --> M["5.3 Metaprompt design"]
@@ -106,7 +106,7 @@ flowchart TD
 The search strategy over the candidate pool.
 
 ```mermaid
-flowchart TD
+flowchart LR
     A["6 Filter and retain<br/>promising candidates"] --> B["6.1 TopK greedy search"]
     A --> C["6.2 Upper confidence bound<br/>and variants"]
     A --> D["6.3 Region-based joint search"]
@@ -121,7 +121,7 @@ flowchart TD
 How the loop terminates.
 
 ```mermaid
-flowchart TD
+flowchart LR
     A["7 Iteration depth"] --> B["7.1 Fixed steps"]
     A --> C["7.2 Variable steps"]
 
