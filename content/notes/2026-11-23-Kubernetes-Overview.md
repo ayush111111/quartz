@@ -1,9 +1,8 @@
 ---
-title: "ML/DevOps: Kubernetes Overview"
+title: "Kubernetes Overview"
 date: 2026-11-23
 tags:
   - kubernetes
-  - devops
   - system-design
   - notes
 ---
@@ -152,7 +151,7 @@ tags:
     - automatic PV creation - developer only creates the PVC, the PV automatically gets created - based on the PV, the storage is also given - storageClassName changes - check by whether the pod is running and has not errored ou
 - Horizontal pod autoscaler
   - automatically controls the replicas (and hence indirectly the pods)
-  - ![HPA metrics flow: pod to cadvisor to kubelet to metrics server to API server to hpa controller](images/kubernetes-hpa-1.png)
+  - ![[kubernetes-hpa-1.png|HPA metrics flow: pod to cadvisor to kubelet to metrics server to API server to hpa controller]]
   - cadvisor - gets stats from pods
   - metrics server - starts from all worker nodes - has usage of pods etc
     - lightweight, in memory - add to kubernetes manually, not present by default
